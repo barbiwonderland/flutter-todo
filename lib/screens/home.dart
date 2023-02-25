@@ -46,19 +46,39 @@ class Home extends StatelessWidget {
                 ],
               ),
             ),
-            Align(
-                child: SizedBox(
-              width: 800,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Agregar una tarea',
-
-                  filled: true,
-                  fillColor: Colors.white, //<-- SEE HERE
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(0),
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30)),
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(left: 25),
+                      labelText: 'Agregar una tarea',
+                      floatingLabelAlignment: FloatingLabelAlignment.center,
+                      prefixIconConstraints:
+                          BoxConstraints(maxHeight: 20, minWidth: 25),
+                      //elimina la linea de abajo del input
+                      border: InputBorder.none,
+                    ),
+                  ),
                 ),
               ),
-            )),
+              Container(
+                margin: EdgeInsets.only(right: 10, bottom: 5),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    // Add your onPressed code here!
+                  },
+                  backgroundColor: Colors.cyan,
+                  child: const Icon(Icons.bookmark_add, color: Colors.white),
+                ),
+              )
+            ])
           ],
         ));
   }

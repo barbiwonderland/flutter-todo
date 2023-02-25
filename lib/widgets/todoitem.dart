@@ -26,13 +26,12 @@ class TodoItem extends StatelessWidget {
           height: 35,
           width: 35,
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 213, 11, 11),
             borderRadius: BorderRadius.circular(5),
           ),
           child: IconButton(
             onPressed: () {},
-            color: Colors.white,
-            iconSize: 18,
+            color: Colors.red,
+            iconSize: 20,
             icon: Icon(Icons.delete),
           ),
         ),
