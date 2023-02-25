@@ -15,7 +15,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final todosList = todoList();
+  List<ToDo> _foundToDo = [];
   final _todoController = TextEditingController();
+
+  // inicializo el estado con la lista estatica
+  @override
+  void initState() {
+    _foundToDo = todosList;
+    // ver
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +52,12 @@ class _HomeState extends State<Home> {
         ),
         body: Column(
           children: [
-            searchBox(context),
+            searchBox(context, _filterTodo),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.all(20.0),
                 children: <Widget>[
-                  for (ToDo item in todosList)
+                  for (ToDo item in _foundToDo)
                     (TodoItem(
                       todo: item,
                       onToDoChanged: _hanleTodoChange,
@@ -114,5 +123,21 @@ class _HomeState extends State<Home> {
       ));
     });
     _todoController.clear();
+  }
+
+  void _filterTodo(String keyWord) {
+    List<ToDo> results = [];
+    if (keyWord.isEmpty) {
+      results = todosList;
+    } else {
+      results = todosList
+          .where((todo) =>
+              (todo.todoText.toLowerCase()).contains(keyWord.toLowerCase()))
+          // lo convierto en una lista
+          .toList();
+    }
+    setState(() {
+      _foundToDo = results;
+    });
   }
 }
