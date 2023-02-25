@@ -15,6 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final todosList = todoList();
+  final _todoController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,8 @@ class _HomeState extends State<Home> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(30)),
                   child: TextField(
-                    textAlign: TextAlign.center,
+                    //de aca se obtiene lo que escribe el usuario
+                    controller: _todoController,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(left: 25),
                       labelText: 'Agregar una tarea',
@@ -81,7 +83,7 @@ class _HomeState extends State<Home> {
                 margin: EdgeInsets.only(right: 10, bottom: 5),
                 child: FloatingActionButton(
                   onPressed: () {
-                    // Add your onPressed code here!
+                    _addToDo(_todoController.text);
                   },
                   backgroundColor: Colors.cyan,
                   child: const Icon(Icons.bookmark_add, color: Colors.white),
@@ -102,5 +104,15 @@ class _HomeState extends State<Home> {
     setState(() {
       todosList.removeWhere((item) => item.id == id);
     });
+  }
+
+  void _addToDo(String toDo) {
+    setState(() {
+      todosList.add(ToDo(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        todoText: toDo,
+      ));
+    });
+    _todoController.clear();
   }
 }
