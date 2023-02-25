@@ -5,10 +5,15 @@ import 'package:flutter_application_1/models/todo.dart';
 import 'package:flutter_application_1/widgets/todoitem.dart';
 import 'package:flutter_application_1/widgets/searchBox.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   //no entiendo estructura
-  Home({Key? key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final todosList = todoList();
 
   @override
@@ -42,7 +47,12 @@ class Home extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.all(20.0),
                 children: <Widget>[
-                  for (ToDo item in todosList) (TodoItem(todo: item)),
+                  for (ToDo item in todosList)
+                    (TodoItem(
+                      todo: item,
+                      onToDoChanged: _hanleTodoChange,
+                      onDeleteItem: _handleDelete,
+                    )),
                 ],
               ),
             ),
@@ -59,7 +69,6 @@ class Home extends StatelessWidget {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(left: 25),
                       labelText: 'Agregar una tarea',
-                      floatingLabelAlignment: FloatingLabelAlignment.center,
                       prefixIconConstraints:
                           BoxConstraints(maxHeight: 20, minWidth: 25),
                       //elimina la linea de abajo del input
@@ -81,5 +90,17 @@ class Home extends StatelessWidget {
             ])
           ],
         ));
+  }
+
+  void _hanleTodoChange(ToDo todo) {
+    setState(() {
+      todo.isDone = !todo.isDone;
+    });
+  }
+
+  void _handleDelete(String id) {
+    setState(() {
+      todosList.removeWhere((item) => item.id == id);
+    });
   }
 }
