@@ -46,8 +46,7 @@ class _HomeState extends State<Home> {
                 width: 40,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  child: Image.network(
-                      "https://hips.hearstapps.com/ellees.h-cdn.co/assets/15/37/1024x1332/1024x1332-por-ti-rostros-activos-personas-luchadoras-12718597-1-esl-es-rostros-activos-personas-luchadoras-jpg.jpg?resize=480:*"),
+                  child: Image.asset('assets/images/prueba.png'),
                 ))
           ]),
         ),
