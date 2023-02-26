@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
               Container(
               margin: EdgeInsets.only(top: 40),
               alignment: Alignment.center,
-              child:Text("No se encontraron resultados,pruebe con otra busqueda.." ,
+              child:Text("No se encontraron resultados..." ,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20,),) ,
               ) ,
