@@ -4,7 +4,7 @@ import 'package:flutter_application_1/fakeData.dart';
 import 'package:flutter_application_1/models/todo.dart';
 import 'package:flutter_application_1/widgets/todoitem.dart';
 import 'package:flutter_application_1/widgets/searchBox.dart';
-
+import 'package:flutter_application_1/widgets/navBar.dart';
 class Home extends StatefulWidget {
   //no entiendo estructura
   const Home({Key? key}) : super(key: key);
@@ -31,25 +31,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 232, 227, 233),
-        appBar: AppBar(
-          elevation: 0,
-          title:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Icon(
-              Icons.menu,
-              color: Colors.white,
-              size: 30,
-            ),
-            Text("To do app", style: TextStyle(color: Colors.white)),
-            Container(
-                height: 40,
-                width: 40,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image.asset('assets/images/prueba.png'),
-                ))
-          ]),
-        ),
+        appBar: navBar(),
         body:  Column(
           children: [
             searchBox(context, _filterTodo),
