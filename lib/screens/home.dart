@@ -14,6 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // to do list deberia  llamarse en controller y que llame a una funcion en el modelo que haga la peticion a todoList?
   final todosList = todoList();
   List<ToDo> _foundToDo = [];
   final _todoController = TextEditingController();
@@ -50,19 +51,30 @@ class _HomeState extends State<Home> {
                 ))
           ]),
         ),
-        body: Column(
+        body:  Column(
           children: [
             searchBox(context, _filterTodo),
+             if (_foundToDo.isEmpty)
+              Container(
+              margin: EdgeInsets.only(top: 40),
+              alignment: Alignment.center,
+              child:Text("No se encontraron resultados,pruebe con otra busqueda.." ,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20,),) ,
+              ) ,
             Expanded(
+             
               child: ListView(
                 padding: const EdgeInsets.all(20.0),
                 children: <Widget>[
-                  for (ToDo item in _foundToDo)
+                   for (ToDo item in _foundToDo)
                     (TodoItem(
                       todo: item,
                       onToDoChanged: _hanleTodoChange,
                       onDeleteItem: _handleDelete,
                     )),
+                 
+                  
                 ],
               ),
             ),
@@ -110,12 +122,14 @@ class _HomeState extends State<Home> {
   }
 
   void _handleDelete(String id) {
+    //edto iria en el modelo?
     setState(() {
       todosList.removeWhere((item) => item.id == id);
     });
   }
 
   void _addToDo(String toDo) {
+    // aca si se actualizaria en un server si tendria que llamar a una funcion del controller que llame al modelo y que haga la modif?
     setState(() {
       todosList.add(ToDo(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
