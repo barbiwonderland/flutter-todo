@@ -6,7 +6,7 @@ import 'package:flutter_application_1/widgets/todoitem.dart';
 import 'package:flutter_application_1/widgets/searchBox.dart';
 import 'package:flutter_application_1/widgets/navBar.dart';
 class Home extends StatefulWidget {
-  //no entiendo estructura
+ 
   const Home({Key? key}) : super(key: key);
 
   @override

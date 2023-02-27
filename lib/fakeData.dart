@@ -1,6 +1,6 @@
 import 'package:flutter_application_1/models/todo.dart';
 
-//necesito crear primera una clase que despues recibe el metodo que retorna una lista de tipo todo
+
 List<ToDo> todoList() {
   return [
     ToDo(id: '01', todoText: 'Morning Excercise', isDone: true),
