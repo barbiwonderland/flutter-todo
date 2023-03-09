@@ -1,5 +1,7 @@
+import 'package:flutter_application_1/widgets/todoitem.dart';
+
 class ToDo {
-  String id;
+  int id;
   String todoText;
   bool isDone;
   ToDo({
@@ -7,4 +9,13 @@ class ToDo {
     required this.todoText,
     this.isDone = false,
   });
+
+
+  factory ToDo.fromJson(Map<String, dynamic> json) {
+    return ToDo(
+      id: json['id'],
+      todoText: json['title'],
+      isDone: json['completed'],
+    );
+  }
 }

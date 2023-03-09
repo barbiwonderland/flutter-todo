@@ -1,12 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_application_1/fakeData.dart';
 import 'package:flutter_application_1/models/todo.dart';
+import 'package:flutter_application_1/services/todoService.dart';
 import 'package:flutter_application_1/widgets/todoitem.dart';
 import 'package:flutter_application_1/widgets/searchBox.dart';
 import 'package:flutter_application_1/widgets/navBar.dart';
+
 class Home extends StatefulWidget {
- 
   const Home({Key? key}) : super(key: key);
 
   @override
@@ -15,50 +18,61 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // to do list deberia  llamarse en controller y que llame a una funcion en el modelo que haga la peticion a todoList?
-  final todosList = todoList();
-  List<ToDo> _foundToDo = [];
+  List<ToDo>? _foundToDo;
+  List<ToDo>? lista = [];
+  List<ToDo>? listaOriginal = [];
+
   final _todoController = TextEditingController();
+
+  iniciarLista() async {
+    await fetchData().then((e) => lista = e);
+    listaOriginal = lista;
+    setState(() {
+      
+    });
+  }
 
   // inicializo el estado con la lista estatica
   @override
   void initState() {
-    _foundToDo = todosList;
     // ver
     super.initState();
+    iniciarLista();
   }
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 232, 227, 233),
         appBar: navBar(),
-        body:  Column(
+        body: Column(
           children: [
             searchBox(context, _filterTodo),
-             if (_foundToDo.isEmpty)
+            if (lista!.isEmpty)
               Container(
-              margin: EdgeInsets.only(top: 40),
-              alignment: Alignment.center,
-              child:Text("No se encontraron resultados..." ,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20,),) ,
-              ) ,
-            Expanded(
-             
-              child: ListView(
-                padding: const EdgeInsets.all(20.0),
-                children: <Widget>[
-                   for (ToDo item in _foundToDo)
-                    (TodoItem(
-                      todo: item,
-                      onToDoChanged: _hanleTodoChange,
-                      onDeleteItem: _handleDelete,
-                    )),
-                 
-                  
-                ],
+                margin: EdgeInsets.only(top: 40),
+                alignment: Alignment.center,
+                child: Text(
+                  "No se encontraron resultados...",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
               ),
-            ),
+            if (lista!.isNotEmpty)
+              Expanded(
+                  child: Container(
+                margin: EdgeInsets.only(top: 50),
+                child: ListView.builder(
+                    itemCount: 5,
+                    itemBuilder: (BuildContext context, int index) {
+                      return (TodoItem(
+                        todo: lista![index],
+                        onToDoChanged: _hanleTodoChange,
+                        onDeleteItem: _handleDelete,
+                      ));
+                    }),
+              )),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               Expanded(
                 child: Container(
@@ -102,20 +116,23 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void _handleDelete(String id) {
+  void _handleDelete(int id) {
     //edto iria en el modelo?
     setState(() {
-      todosList.removeWhere((item) => item.id == id);
+      lista!.removeWhere((item) => item.id == id);
     });
   }
 
   void _addToDo(String toDo) {
     // aca si se actualizaria en un server si tendria que llamar a una funcion del controller que llame al modelo y que haga la modif?
     setState(() {
-      todosList.add(ToDo(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        todoText: toDo,
-      ));
+      lista!
+        ..insert(
+            0,
+            (ToDo(
+              id: DateTime.now().millisecondsSinceEpoch,
+              todoText: toDo,
+            )));
     });
     _todoController.clear();
   }
@@ -123,16 +140,16 @@ class _HomeState extends State<Home> {
   void _filterTodo(String keyWord) {
     List<ToDo> results = [];
     if (keyWord.isEmpty) {
-      results = todosList;
+      results = listaOriginal!;
     } else {
-      results = todosList
+      results = lista!
           .where((todo) =>
               (todo.todoText.toLowerCase()).contains(keyWord.toLowerCase()))
           // lo convierto en una lista
           .toList();
     }
     setState(() {
-      _foundToDo = results;
+      lista = results;
     });
   }
 }
